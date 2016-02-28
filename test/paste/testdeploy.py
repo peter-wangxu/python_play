@@ -54,7 +54,8 @@ class LogFilter():
     def __call__(self, environ, start_response):
         print "Filter:LogFilter is called"
         req = Request(environ)
-        if req.GET.get('username', "") == self.local_conf['username'] and req.GET.get('password', "") == self.local_conf['password']:
+        if (req.GET.get('username', "") == self.local_conf['username'] and
+            req.GET.get('password', "") == self.local_conf['password']):
             return self.app(environ, start_response)
         start_response("200 OK", [("Content-type", "text/plain")])
         return ["You are not authorized\n"]
@@ -72,11 +73,8 @@ class ShowAuthor():
         self.global_conf = global_conf
         self.local_conf = local_conf
     def __call__(self, environ, start_response):
-        res = Response()
-        res.status = "200 OK"
-        res.content_type = 'text/plain'
-        res.body = ':'.join(['Author', self.local_conf['author']])
-        return res
+        start_response("200 OK", [('Content-type', 'text/plain')])
+        return ['Author', self.local_conf['author']]
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, sigint_handler)
@@ -87,4 +85,3 @@ if __name__ == '__main__':
     server = make_server('localhost', 8088, wsgi_app)
     server.serve_forever()
     pass
-
