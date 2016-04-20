@@ -10,6 +10,7 @@ gevent.monkey.patch_socket()
 THREAD_NUM = 150
 COUNT = 100000
 
+
 def fetch(pid):
     start = time.time()
     response = urllib2.urlopen('http://sdiehl.github.io/gevent-tutorial/')

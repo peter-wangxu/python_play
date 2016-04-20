@@ -1,5 +1,5 @@
 import unittest
-
+import mock
 
 class TestStringMethods(unittest.TestCase):
     @classmethod
@@ -23,5 +23,10 @@ class TestStringMethods(unittest.TestCase):
         with self.assertRaises(TypeError):
             s.split(2)
 
-
+    def test_cli(self):
+        from vnxCliApi.vnx.resource.system import VNXSystem
+        VNXSystem.__init__ = mock.Mock(return_value=None)
+        # vnx = VNXSystem('192.168')
+        VNXSystem.__init__.assert_has_calls([mock.call('192.168')])
+        # self.assertEqual(None, vnx)
 
